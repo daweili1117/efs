@@ -7,6 +7,23 @@ from django.shortcuts import redirect
 from django.db.models import Sum
 
 
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import CustomerSerializer
+
+# List at the end of the views.py
+# Lists all customers
+class CustomerList(APIView):
+
+    def get(self,request):
+        customers_json = Customer.objects.all()
+        serializer = CustomerSerializer(customers_json, many=True)
+        return Response(serializer.data)
+
+
+
 now = timezone.now()
 def home(request):
    return render(request, 'portfolio/home.html',
@@ -162,3 +179,10 @@ def portfolio(request,pk):
                                                        'sum_of_initial_stock_value': sum_of_initial_stock_value, })
 
 
+
+
+class CustomerList(APIView):
+    def get(self,request):
+        customers_json = Customer.objects.all()
+        serializer = CustomerSerializer(customers_json, many=True)
+        return Response(serializer.data)
